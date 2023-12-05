@@ -4,6 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { JSDOM } from 'jsdom';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class AppService {
@@ -22,6 +23,7 @@ export class AppService {
     return this.cotizaciones;
   }
 
+  @Cron(CronExpression.EVERY_5_MINUTES)
   private async updateCotizaciones() {
     const res = (await lastValueFrom(this.httpService.get(this.DOLAR_HOY_URL))).data;
 
